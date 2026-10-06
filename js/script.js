@@ -112,4 +112,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // ----------------------------------------------------
+    // 4. Photo Gallery
+    // ----------------------------------------------------
+    // Add or remove filenames here; photos are stored in assets/images/us/.
+    const galleryImages = ['bench.jpeg', 'hands.png', 'photo-booth-strip.jpeg'];
+    const gallerySlider = document.getElementById('gallery-slider');
+    if (gallerySlider) {
+        galleryImages.forEach(filename => {
+            const item = document.createElement('figure');
+            item.className = 'gallery-item';
+
+            const image = document.createElement('img');
+            image.src = `assets/images/us/${filename}`;
+            image.alt = 'A favourite moment of Marco and Jess';
+            image.loading = 'lazy';
+
+            item.append(image);
+            gallerySlider.append(item);
+        });
+    }
 });
