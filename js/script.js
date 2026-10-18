@@ -6,6 +6,31 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // ----------------------------------------------------
+    // 0. Page Loading Screen
+    // ----------------------------------------------------
+    const pageLoader = document.getElementById('page-loader');
+    if (pageLoader) {
+        const minDisplayMs = 950;
+        const startTime = performance.now();
+
+        const hideLoader = () => {
+            const elapsed = performance.now() - startTime;
+            const remaining = Math.max(0, minDisplayMs - elapsed);
+            setTimeout(() => {
+                pageLoader.classList.add('is-loaded');
+            }, remaining);
+        };
+
+        if (document.readyState === 'complete') {
+            hideLoader();
+        } else {
+            window.addEventListener('load', hideLoader, { once: true });
+            // Fallback so the loader never stays longer than 2.2s on slow connections
+            setTimeout(hideLoader, 2200);
+        }
+    }
+
+    // ----------------------------------------------------
     // 1. Countdown Timer
     // Target: Saturday, September 4, 2027 at 11:00:00 CEST (UTC+2)
     // ----------------------------------------------------

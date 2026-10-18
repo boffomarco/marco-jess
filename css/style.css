@@ -64,6 +64,68 @@ section, main, header, footer, article, aside {
     background-color: var(--bg-base);
 }
 
+/* ==========================================================================
+   Page Loading Overlay
+   ========================================================================== */
+
+.page-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background-color: var(--bg-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-loader.is-loaded {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.page-loader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+.page-loader-logo {
+    width: 112px;
+    height: auto;
+    animation: loaderPulse 1.8s ease-in-out infinite;
+}
+
+.page-loader-spinner {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(234, 227, 213, 0.22);
+    border-top-color: var(--text-ivory);
+    animation: loaderSpin 0.85s linear infinite;
+}
+
+@keyframes loaderSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loaderPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.92;
+    }
+    50% {
+        transform: scale(1.04);
+        opacity: 1;
+    }
+}
+
 /* Accessible Skip Link */
 .skip-link {
     position: absolute;
@@ -491,19 +553,22 @@ section + section::before {
 }
 
 .getting-around-frame {
-    max-width: 960px;
+    max-width: 980px;
     margin: 0 auto;
     background: transparent;
     border: none;
     box-shadow: none;
     border-radius: 0;
+    overflow: hidden;
 }
 
+/* Trim the 11.9% left and 14.9% right transparent canvas margins so the visible stamp matches "The Plan" width */
 .getting-around-frame img {
     display: block;
-    width: 100%;
+    width: 136.6%;
+    max-width: none;
     height: auto;
-    margin: 0 auto;
+    margin: 0 -20.3% 0 -16.3%;
 }
 
 /* ==========================================================================
@@ -515,7 +580,7 @@ section + section::before {
 }
 
 .planning-trip-frame {
-    max-width: 880px;
+    max-width: 980px;
     margin: 0 auto;
     background: transparent;
     border: none;
@@ -606,14 +671,16 @@ section + section::before {
 
 .polaroids-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(24px, 4.5vw, 56px);
     align-items: center;
-    max-width: 1120px;
+    justify-items: center;
+    max-width: 980px;
     margin: 0 auto;
 }
 
 .polaroid-item {
+    width: 100%;
     background: transparent;
     border: none;
     overflow: visible;
@@ -626,20 +693,31 @@ section + section::before {
     margin: 0 auto;
 }
 
-/* Enlarge left and right polaroids to compensate for their wider transparent canvas margins */
+/* Enlarge polaroids and compensate for wider transparent canvas margins on polaroid 1 and 3 */
 .polaroid-left img {
-    transform: scale(1.38);
+    transform: scale(1.42);
     transform-origin: center center;
 }
 
+.polaroid-center img {
+    transform: scale(1.06);
+    transform-origin: center center;
+}
+
+.polaroid-right {
+    grid-column: 1 / -1;
+    width: 50%;
+    margin: 16px auto 0;
+}
+
 .polaroid-right img {
-    transform: scale(1.32);
+    transform: scale(1.38);
     transform-origin: center center;
 }
 
 .contact-wrapper {
     max-width: 660px;
-    margin: clamp(110px, 12vw, 160px) auto 0;
+    margin: clamp(120px, 14vw, 175px) auto 0;
     text-align: center;
 }
 
@@ -746,7 +824,24 @@ section + section::before {
     }
 
     .polaroids-grid {
-        gap: 12px;
+        gap: 28px 12px;
+    }
+
+    .polaroid-left img {
+        transform: scale(1.48);
+    }
+
+    .polaroid-center img {
+        transform: scale(1.1);
+    }
+
+    .polaroid-right {
+        width: 56%;
+        margin-top: 18px;
+    }
+
+    .polaroid-right img {
+        transform: scale(1.44);
     }
 
     .timer {
